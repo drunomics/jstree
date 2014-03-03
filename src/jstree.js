@@ -26,6 +26,9 @@
 }(function ($, undefined) {
 	"use strict";
 
+  // Adds backword compatibilty with older jQuery versions.
+  $.fn.addBack = $.fn.andSelf;
+
 	// prevent another load? maybe there is a better way?
 	if($.jstree) {
 		return;
@@ -232,12 +235,13 @@
 	 * @name $(':jstree')
 	 * @return {jQuery}
 	 */
-	$.expr[':'].jstree = $.expr.createPseudo(function(search) {
-		return function(a) {
-			return $(a).hasClass('jstree') &&
-				$(a).data('jstree') !== undefined;
-		};
-	});
+  $.expr[':'].jstree = $.expr.createPseudo ?
+    $.expr.createPseudo(function(search) {
+      return function(a) {
+        return $(a).hasClass('jstree') &&
+          $(a).data('jstree') !== undefined;
+      };
+    }) : null;
 
 	/**
 	 * stores all defaults for the core
